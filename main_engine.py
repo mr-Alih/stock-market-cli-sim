@@ -20,7 +20,7 @@ regime = "random"
 # stauts just means if its on or not
 def calculate_percentage(count, start=90, target=30, max_count=16):
     count = max(0, min(count, max_count))
-    if max_count >=15:
+    if  counters[regimes.index(regime)] >=15:
             counters[regimes.index(regime)] = 1
     return start + (target - start) * (count / max_count)
     
@@ -50,15 +50,15 @@ def callregime(name):
 
     # change the regime randomly
     choice = random.randint(0,1)
-    if choice == 0:
+    if regime != "random":
         # flik normal regime change (chance)
+        changeregime(2)
+    elif choice == 0:
+        # flik abnormal regime change (random)
         changeregime(0)
     elif choice == 1:
-        # flik abnormal regime change (random)
-        changeregime(1)
-    elif regime != "random":
         # flik abnormal regime change (flatten)
-        changeregime(2)
+        changeregime(1)
 
     if regime == "random":
         name = random.gauss(0, .01)
