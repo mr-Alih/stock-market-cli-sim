@@ -14,14 +14,16 @@ savecount = 0
 regimes = ["random", "bull", "bear", "sideway", "volatility"]
 s_weight = [90, 3, 3, 2, 2] #standard weights
 l_weight = [90, 3, 3, 2, 2]
-counters = [0, 0 , 0, 0, 0]
+counters = [1, 1 , 1, 1, 1]
 regime = "random"
 
 # stauts just means if its on or not
-def calculate_percentage(count, start=90, target=30, max_count=15):
+def calculate_percentage(count, start=90, target=30, max_count=16):
     count = max(0, min(count, max_count))
+    if max_count >=15:
+            counters[regimes.index(regime)] = 1
     return start + (target - start) * (count / max_count)
-
+    
 def changeregime(option):
     global l_weight, counters, s_weight, regimes, regime
     # option changes flikking
@@ -47,14 +49,14 @@ def callregime(name):
     global l_weight, counters, s_weight, regimes, regime
 
     # change the regime randomly
-    choice = random.randint(0,2)
+    choice = random.randint(0,1)
     if choice == 0:
         # flik normal regime change (chance)
         changeregime(0)
     elif choice == 1:
         # flik abnormal regime change (random)
         changeregime(1)
-    else:
+    elif regime != "random":
         # flik abnormal regime change (flatten)
         changeregime(2)
 
@@ -105,6 +107,6 @@ while True:
     calc()
     market_cap = Tshares*price
     os.system("cls")
-    print("Market of NODE : ", price, "Market Cap", round(int(market_cap)), "P/L", market, regime)
+    print("Market of NODE : ", price, "Market Cap", round(int(market_cap)), "P/L", market, regime, counters[regimes.index(regime)])
     time.sleep(.01)
     
